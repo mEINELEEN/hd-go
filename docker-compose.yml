@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  helpdesk-app:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      # Пробрасываем постоянный диск, чтобы SQLite не очищался при перезапуске
+      - helpdesk_data:/app/data
+    environment:
+      - PORT=8080
+      - DB_PATH=/app/data/helpdesk.db
+
+volumes:
+  helpdesk_data:
