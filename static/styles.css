@@ -1,97 +1,225 @@
+:root {
+    /* Цветовая палитра в стиле гос. ведомств */
+    --mj-blue: #0b2f5c;
+    --mj-red: #8b181b;
+    --mj-gold: #c2a059;
+    --mj-bg: #f4f6f9;
+    --mj-text: #333333;
+    --mj-white: #ffffff;
+}
+
 * {
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    background: #f4f6f9;
-    margin: 0;
-    padding: 20px;
+    background-color: var(--mj-bg);
+    color: var(--mj-text);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
 }
 
+/* Верхняя статусная панель */
+.top-bar {
+    background-color: var(--mj-blue);
+    border-bottom: 4px solid var(--mj-red);
+    padding: 15px 20px;
+    color: var(--mj-white);
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.top-bar h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--mj-gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Основной контейнер, растягивающийся на оставшуюся высоту */
 .container {
+    flex: 1;
     width: 100%;
-    max-width: 600px;
-    background: white;
-    padding: 25px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Форма авторизации */
+#auth-box {
+    max-width: 450px;
+    width: 100%;
+    margin: auto; /* Центрирует по вертикали и горизонтали */
+    background: var(--mj-white);
+    padding: 40px 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-top: 5px solid var(--mj-blue);
 }
 
 h2 {
     margin-top: 0;
-    color: #333;
+    color: var(--mj-blue);
+    font-size: 1.5rem;
+    margin-bottom: 25px;
 }
 
+/* Элементы форм */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--mj-blue);
+    font-size: 0.9rem;
 }
 
 input, select, textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 12px 15px;
+    border: 1px solid #ccd5df;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #fdfdfd;
+    transition: border-color 0.3s;
 }
 
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--mj-gold);
+    box-shadow: 0 0 0 3px rgba(194, 160, 89, 0.2);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Кнопки */
 button {
-    background: #007bff;
-    color: white;
+    background: var(--mj-blue);
+    color: var(--mj-white);
     border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
+    padding: 14px 20px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 1rem;
+    font-weight: 600;
     width: 100%;
+    transition: background 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 button:hover {
-    background: #0056b3;
+    background: #082142;
 }
 
+.btn-danger {
+    background: var(--mj-red);
+    width: auto;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+}
+
+.btn-danger:hover {
+    background: #6e1114;
+}
+
+/* Утилиты */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
+.nav-links {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.nav-links a {
+    color: var(--mj-blue);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 1px dashed var(--mj-blue);
+}
+
+/* Шапка внутри личного кабинета */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e5eb;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Заявки */
 .ticket {
-    border: 1px solid #e0e0e0;
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    background: #fafafa;
+    background: var(--mj-white);
+    border: 1px solid #e0e5eb;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border-left: 5px solid var(--mj-blue);
 }
 
 .ticket-header {
     display: flex;
     justify-content: space-between;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    color: var(--mj-blue);
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.status-new {
-    color: #d9534f;
+.status-new { color: var(--mj-red); background: #fbecec; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem;}
+.status-done { color: #1e7e34; background: #e6f4ea; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem;}
+
+.admin-panel {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 1px solid #e0e5eb;
+    border-radius: 6px;
 }
 
-.status-done {
-    color: #5cb85c;
-}
-
-.nav-links {
+.admin-controls {
+    display: flex;
+    gap: 15px;
     margin-top: 10px;
-    text-align: center;
-    font-size: 14px;
 }
 
-.nav-links a {
-    color: #007bff;
-    text-decoration: none;
-    cursor: pointer;
+/* Мобильная адаптация */
+@media (max-width: 600px) {
+    .top-bar h1 { font-size: 1.2rem; }
+    .container { padding: 15px; }
+    #auth-box { padding: 30px 20px; border-top-width: 4px; }
+    .app-header { flex-direction: column; align-items: flex-start; }
+    .btn-danger { width: 100%; }
+    .admin-controls { flex-direction: column; }
+    .admin-controls button { width: 100%; }
+    
+    /* Чтобы iOS не приближала экран при клике на поля ввода */
+    input, select, textarea { font-size: 16px; } 
 }

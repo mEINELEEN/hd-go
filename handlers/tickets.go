@@ -3,6 +3,7 @@ package handlers
 import (
 	"database/sql"
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -43,6 +44,7 @@ func CreateTicketHandler(w http.ResponseWriter, r *http.Request) {
 	query := `INSERT INTO tickets (title, description, status, user_id) VALUES (?, ?, 'new', ?)`
 	_, err := db.DB.Exec(query, req.Title, req.Description, req.UserID)
 	if err != nil {
+		log.Printf("Ошибка при создании заявки: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Ошибка создания заявки"})
 		return
@@ -65,6 +67,7 @@ func GetTicketsHandler(w http.ResponseWriter, r *http.Request) {
 	var rows *sql.Rows
 	var err error
 
+	// В обоих запросах ровно 8 полей!
 	if role == "admin" {
 		rows, err = db.DB.Query(`
 			SELECT t.id, t.title, t.description, t.status, COALESCE(t.admin_response, ''), t.user_id, u.username, t.created_at 
@@ -72,11 +75,12 @@ func GetTicketsHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		userID, _ := strconv.Atoi(userIDStr)
 		rows, err = db.DB.Query(`
-			SELECT t.id, t.title, t.description, t.status, t.user_id, u.username, t.created_at 
+			SELECT t.id, t.title, t.description, t.status, COALESCE(t.admin_response, ''), t.user_id, u.username, t.created_at 
 			FROM tickets t JOIN users u ON t.user_id = u.id WHERE t.user_id = ? ORDER BY t.created_at DESC`, userID)
 	}
 
 	if err != nil {
+		log.Printf("Ошибка выполнения SELECT: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Ошибка получения заявок"})
 		return
@@ -88,16 +92,18 @@ func GetTicketsHandler(w http.ResponseWriter, r *http.Request) {
 		Title         string `json:"title"`
 		Description   string `json:"description"`
 		Status        string `json:"status"`
+		AdminResponse string `json:"admin_response"`
 		UserID        int    `json:"user_id"`
 		Username      string `json:"username"`
 		CreatedAt     string `json:"created_at"`
-		AdminResponse string `json:"admin_response"`
 	}
 
 	var tickets []TicketResponse
 	for rows.Next() {
 		var t TicketResponse
+		// Считываем ровно 8 полей
 		if err := rows.Scan(&t.ID, &t.Title, &t.Description, &t.Status, &t.AdminResponse, &t.UserID, &t.Username, &t.CreatedAt); err != nil {
+			log.Printf("Ошибка Scan строки: %v", err)
 			continue
 		}
 		tickets = append(tickets, t)
@@ -128,12 +134,13 @@ func UpdateTicketStatusHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = db.DB.Exec("UPDATE tickets SET status = ? admin_response = ? WHERE id = ?", req.Status, ticketID)
+	_, err = db.DB.Exec("UPDATE tickets SET status = ?, admin_response = ? WHERE id = ?", req.Status, req.AdminResponse, ticketID)
 	if err != nil {
+		log.Printf("Ошибка при UPDATE статуса в БД: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Ошибка обновления статуса"})
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "message": "Ошибка обновления заявки"})
 		return
 	}
 
-	json.NewEncoder(w).Encode(map[string]string{"status": "success", "message": "Статус заявки успешно обновлен"})
+	json.NewEncoder(w).Encode(map[string]string{"status": "success", "message": "Заявка успешно обновлена"})
 }
