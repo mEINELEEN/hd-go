@@ -23,6 +23,18 @@ func main() {
 	http.HandleFunc("/api/register", handlers.RegisterHandler)
 	http.HandleFunc("/api/login", handlers.LoginHandler)
 
+	// Роуты заявок
+	http.HandleFunc("/api/tickets", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			handlers.CreateTicketHandler(w, r)
+		} else if r.Method == http.MethodGet {
+			handlers.GetTicketsHandler(w, r)
+		} else {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+		}
+	})
+	http.HandleFunc("/api/tickets/status", handlers.UpdateTicketStatusHandler)
+
 	fmt.Println("Сервер запущен на http://localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatalf("Ошибка запуска сервера: %v", err)

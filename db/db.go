@@ -37,6 +37,7 @@ func createTables() error {
 		title TEXT NOT NULL,
 		description TEXT NOT NULL,
 		status TEXT NOT NULL DEFAULT 'new',
+		admin_response TEXT DEFAULT '',
 		user_id INTEGER NOT NULL,
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY (user_id) REFERENCES users(id)
@@ -56,6 +57,8 @@ func createTables() error {
 	if err != nil {
 		return fmt.Errorf("ошибка создания таблиц: %w", err)
 	}
+
+	DB.Exec("ALTER TABLE tickets ADD COLUMN admin_response TEXT DEFAULT '';")
 
 	return nil
 }
