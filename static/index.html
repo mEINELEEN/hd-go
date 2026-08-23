@@ -11,7 +11,7 @@
 
 <!-- Официальная шапка на всю ширину экрана -->
 <div class="top-bar">
-    <h1>Единая система обращений</h1>
+    <h1>Единая система обращений для ГУ Минюста России по СПб и ЛО</h1>
 </div>
 
 <div class="container">
@@ -19,7 +19,7 @@
     <div id="auth-box">
         <h2 id="auth-title">Вход в систему</h2>
         <div class="form-group">
-            <label>Логин сотрудника / заявителя</label>
+            <label>Логин сотрудника</label>
             <input type="text" id="username" placeholder="Введите логин">
         </div>
         <div class="form-group">
@@ -29,8 +29,8 @@
         <div class="form-group hidden" id="role-group">
             <label>Уровень доступа</label>
             <select id="role">
-                <option value="user">Заявитель (Пользователь)</option>
-                <option value="admin">Сотрудник ведомства (Администратор)</option>
+                <option value="user">Пользователь</option>
+                <option value="admin">Администратор</option>
             </select>
         </div>
         <button id="auth-btn" onclick="submitAuth()">Войти</button>
