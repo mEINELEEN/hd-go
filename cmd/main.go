@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"hd-go/db"
 	"hd-go/handlers"
@@ -34,6 +35,11 @@ func main() {
 		}
 	})
 	http.HandleFunc("/api/tickets/status", handlers.UpdateTicketStatusHandler)
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
 	fmt.Println("Сервер запущен на http://localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {

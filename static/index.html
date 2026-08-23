@@ -2,54 +2,66 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Helpdesk Система</title>
+    <!-- Этот тег критически важен для работы на мобильных устройствах! -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Электронная приемная обращений</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<!-- Официальная шапка на всю ширину экрана -->
+<div class="top-bar">
+    <h1>Единая система обращений</h1>
+</div>
+
 <div class="container">
     <!-- Форма Авторизации -->
     <div id="auth-box">
-        <h2 id="auth-title">Вход в Helpdesk</h2>
+        <h2 id="auth-title">Вход в систему</h2>
         <div class="form-group">
-            <label>Логин</label>
-            <input type="text" id="username">
+            <label>Логин сотрудника / заявителя</label>
+            <input type="text" id="username" placeholder="Введите логин">
         </div>
         <div class="form-group">
             <label>Пароль</label>
-            <input type="password" id="password">
+            <input type="password" id="password" placeholder="Введите пароль">
         </div>
         <div class="form-group hidden" id="role-group">
-            <label>Роль</label>
+            <label>Уровень доступа</label>
             <select id="role">
-                <option value="user">Пользователь</option>
-                <option value="admin">Администратор</option>
+                <option value="user">Заявитель (Пользователь)</option>
+                <option value="admin">Сотрудник ведомства (Администратор)</option>
             </select>
         </div>
         <button id="auth-btn" onclick="submitAuth()">Войти</button>
         <div class="nav-links">
-            <a id="toggle-auth" onclick="toggleAuthMode()">Зарегистрироваться</a>
+            <a id="toggle-auth" onclick="toggleAuthMode()">Регистрация нового заявителя</a>
         </div>
     </div>
 
     <!-- Личный кабинет и Заявки -->
     <div id="app-box" class="hidden">
-        <h2>Заявки (<span id="user-display"></span>)</h2>
-        <button onclick="logout()" style="background: #dc3545; margin-bottom: 20px;">Выйти</button>
-
-        <div id="create-ticket-section">
-            <h3>Создать заявку</h3>
-            <div class="form-group">
-                <input type="text" id="ticket-title" placeholder="Тема проблемы">
-            </div>
-            <div class="form-group">
-                <textarea id="ticket-desc" placeholder="Описание проблемы..."></textarea>
-            </div>
-            <button onclick="createTicket()">Отправить заявку</button>
-            <hr style="margin: 20px 0;">
+        
+        <div class="app-header">
+            <h2 style="margin: 0;">Рабочий кабинет: <span id="user-display" style="color: var(--mj-gold);"></span></h2>
+            <button onclick="logout()" class="btn-danger">Завершить сеанс</button>
         </div>
 
-        <h3>Список заявок</h3>
+        <div id="create-ticket-section">
+            <h3 style="color: var(--mj-blue);">Направить новое обращение</h3>
+            <div class="form-group">
+                <label>Тема обращения</label>
+                <input type="text" id="ticket-title" placeholder="Краткая суть проблемы">
+            </div>
+            <div class="form-group">
+                <label>Подробное описание</label>
+                <textarea id="ticket-desc" placeholder="Опишите ситуацию во всех подробностях..."></textarea>
+            </div>
+            <button onclick="createTicket()">Зарегистрировать обращение</button>
+            <hr style="border: 0; border-top: 1px solid #ccd5df; margin: 30px 0;">
+        </div>
+
+        <h3 style="color: var(--mj-blue); margin-bottom: 15px;">Реестр обращений</h3>
         <div id="tickets-list"></div>
     </div>
 </div>

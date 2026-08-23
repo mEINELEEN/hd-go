@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	_ "modernc.org/sqlite"
 )
@@ -10,8 +11,13 @@ import (
 var DB *sql.DB
 
 func InitDB() error {
+	dbPath := os.Getenv("DB_PATH")
+	if dbPath == "" {
+		dbPath = "./helpdesk.db"
+	}
+
 	var err error
-	DB, err = sql.Open("sqlite", "./helpdesk.db")
+	DB, err = sql.Open("sqlite", dbPath)
 	if err != nil {
 		return fmt.Errorf("ошибка открытия БД: %w", err)
 	}
